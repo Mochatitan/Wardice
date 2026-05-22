@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose"
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "jest": "^30.4.2",
     "vite": "^6.0.11"
   },
   "dependencies": {

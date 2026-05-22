@@ -2,7 +2,8 @@ import { Scene, Object, ImageObject, ButtonObject } from './scene.js'
 import { MultiplayerLobbiesScene } from './scenes/multiplayerlobbies.js';
 import { MainScene } from './scenes/mainScreen.js';
 import { LoadingScene } from './scenes/loadingScreen.js';
-import { LobbyScene } from './scenes/lobbyScene.js';
+import { singleplayerGameScene } from './scenes/singleplayerGameScene.js'
+import {k_socket} from './socket.js';
 
 /** @type {HTMLCanvasElement} */
 
@@ -17,6 +18,14 @@ const SceneManager = {
     currentScene: null
 }
 
+const GameManager = {
+    name: "extravertido",
+    playerOne: false,
+    roomIndex: 6004,
+    roomCode: "AAAA",
+    firstDice: 7,
+}
+
 
 
 
@@ -25,8 +34,8 @@ const SceneManager = {
 function initialize() {
     onresize = resize;
     resize();
-    // SceneManager.currentScene = MultiplayerLobbiesScene;
-    SceneManager.currentScene = LobbyScene;
+    SceneManager.currentScene = MultiplayerLobbiesScene;
+    // SceneManager.currentScene = singleplayerGameScene;
 
     requestAnimationFrame(loop);
 }
@@ -72,4 +81,4 @@ function resize() {
 
 initialize();
 
-export { ctx, canvas, SceneManager }
+export { ctx, canvas, SceneManager, GameManager }

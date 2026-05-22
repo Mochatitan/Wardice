@@ -2,7 +2,7 @@ export default {
     server: {
         proxy: {
             '/socket.io': {
-                target: 'http://localhost:3000',
+                target: 'http://66.94.108.155:3000',
                 ws: true,
             },
         },

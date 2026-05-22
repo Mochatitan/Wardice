@@ -1,16 +1,12 @@
 import { Scene, Object, ImageObject, ButtonObject, TextObject, InputObject } from "../scene";
-import { ctx, canvas } from '../main.js';
+import { ctx, canvas, GameManager } from '../main.js';
 import { io } from "socket.io-client";
 import { SceneManager } from "../main.js";
-import { LobbyScene } from "./lobbyScene.js";
 import { Lobby } from "../Lobby.js";
-import {
-    Player
+import {Player} from "../Player.js";
+import { k_socket } from "../socket.js";
+import { LobbyScene } from "./lobbyScreen.js";
 
-} from "../Player.js";
-
-
-export const socket = io("ws://localhost:3000");
 
 const codebox = new InputObject(() => [((canvas.width / 2) - 150) - 110, (325)], () => [150, 100], "g", false, 4);
 const namebox = new InputObject(() => [((canvas.width / 2) - 150) - 200, (125)], () => [690, 100], "John", true, 15);
@@ -35,8 +31,8 @@ new ButtonObject(() => [((canvas.width / 2) - 150) + 110, 300], () => [300, 150]
 }, function () {
     // typingCode = true;
     // console.log(typingCode);
-    socket.emit("join-lobby", codebox.getInput(), namebox.getInput());
-    //socket.emit("test", "if you can read this, the test worked  ");
+    k_socket.emit("join-lobby", codebox.getInput(), namebox.getInput());
+    //k_socket.emit("test", "if you can read this, the test worked  ");
 }),
 
     codebox, namebox,
@@ -47,13 +43,13 @@ new ButtonObject(() => [((canvas.width / 2) - 200), 500], () => [400, 150], func
     ctx.fillStyle = "blue";
     ctx.fillRect(x, y, w, h);
 }, function () {
-    //socket.emit("test", "if you can read this, the test worked  ");
+    //k_socket.emit("test", "if you can read this, the test worked  ");
     console.log(this.parentScene.objects[2].text)
 }),
 
 ]);
 
-socket.on("suckies-join", (lobbyData) => {
+k_socket.on("suckies-join", (lobbyData) => {
     console.log("im joining the lobby! can you say lobby in spanish?");
     console.log(lobbyData.code);
 
@@ -62,8 +58,13 @@ socket.on("suckies-join", (lobbyData) => {
     lobby.players = lobbyData.players.map(p => new Player(p.name, p.id, p.index));
     lobby.printPlayers();
 
+    GameManager.index = lobbyData.index;
+    GameManager.roomCode = lobbyData.code;
+    GameManager.name = namebox.getInput();
+
     SceneManager.currentScene = LobbyScene;
 });
-socket.on('test-room', (msg) => {
+
+k_socket.on('test-room', (msg) => {
     console.log("SECOND TEST: " + msg);
 });

@@ -1,10 +1,9 @@
 const express = require('express');
 const http = require('http');
 const { Socket } = require('socket.io-client');
-//const { Server } = require('socket.io');
-// const cors = require('cors');
-
 const app = express();
+const Player = require('./player');
+const Lobby = require('./lobby');
 
 const server = http.createServer(app);
 //const io = new Server(server);
@@ -17,40 +16,10 @@ const io = require("socket.io")(server, {
 
 const PORT = 3000;
 
-class Lobby {
-
-    players = [];
-    constructor(code, password) {
-        this.code = code;
-        this.password = password;
-    }
-
-    printPlayers() {
-        players.forEach((player) => {
-            console.log(player.name);
-        });
-    }
-
-    emit(io, signal, variable) {
-        io.to(this.code).emit(signal, variable);
-    }
-}
-class Player {
-    lobby = "none";
-    name = "delta 1-1";
-    index = 192;
-    constructor(name, id) {
-        console.log("lengt: " + players.length);
-        this.index = players.length;
-        this.id = id;
-        this.name = name;
-    }
-}
-
 const players = [];
 const lobbies = [];
 lobbies.push(new Lobby("JKLM", "1234"));
-console.log("lobbies: " + lobbies.length);
+// console.log("lobbies: " + lobbies.length);
 
 function getPlayerIndexByID(id) {
     for (let player of players) {
@@ -86,26 +55,41 @@ io.on('connection', (socket) => {
     // });
 
     socket.on("join-lobby", (code, name) => {
-        players.push(new Player(name, socket.id));
-        let index = getPlayerIndexByID(socket.id);
-        console.log("index: " + index);
-        var playerJoining = players[index];
+        let playerDuplicate = false;
+        let playerJoining = null;
+        players.forEach((playerEach)=>{
+            if(playerEach.id === socket.id){
+                console.log("player duplicate: " + name);
+                playerDuplicate = true;
+            }
+        });
+        if(playerDuplicate){
+            return; // TODO make duplicates only apply to same room, and warn player they are a duplicate
+        }
+        if(!playerDuplicate){
+            playerJoining = new Player(name, socket.id, players.length);
+            players.push(playerJoining);
+        }
+
+        let index = getPlayerIndexByID(playerJoining.id);
 
         console.log("player " + playerJoining.name + " attempt to log onto lobby " + code + ".");
-        lobbies.forEach((lobby) => {
+        lobbies.forEach((lobby, index) => {
             if (code == lobby.code) {
                 console.log("lobby code match.");
-                lobby.players.push(playerJoining);
-                playerJoining.lobby = lobby.code;
-                socket.join(lobby.code);
-                lobby.printPlayers();
+                lobby.addPlayer(playerJoining, socket);
+                //lobby.printPlayers();
                 //io.to("JKLM").emit("test-room", "skib");
-                lobby.emit(io, "test-room", "skib");
-                io.emit("suckies-join", {
+                //lobby.emit(io, "test-room", "skib");
+                socket.emit("suckies-join", {
                     code: lobby.code,
                     password: lobby.password,
-                    players: lobby.players.map(player => ({ name: player.name, id: player.id, index: player.index })) // Send as plain objects,
+                    players: lobby.players.map(player => ({ name: player.name, id: player.id, index: player.index })), // Send as plain objects,
+                    index: index
                 });
+                if(lobby.isFull()){
+                    lobby.startGame(io);
+                }
             } else {
                 console.log("lobby code mismatch.");
                 console.log(code + " " + lobby.code);
@@ -115,14 +99,27 @@ io.on('connection', (socket) => {
         //io.emit("test-two", "if you can read this the test worked");
     });
 
-    // Handle receiving the 2D array from a client
-    socket.on('sendArray', (flaggrid) => { //yer a wizard harry
-        console.log(`Received array from ${getPlayerIndexByID(socket.id)} in room`, flaggrid);
-        console.table(flaggrid);
-        // Broadcast the array to everyone else in the room
-        // socket.to(room).emit('receiveArray', { name, array2D });
+
+    socket.on("player-move", (moveInformation) => {
+        console.log("player moved at " + moveInformation.colPlaced);
+        console.log("emitting move to " + moveInformation.roomCode);
+        io.to(moveInformation.roomCode).emit("enemy-move", (moveInformation));
+        // socket.emit("enemy-move", (moveInformation));
     });
 
+    
+    /*
+function sendMoveToServer(col, dice){
+    const moveInformation = {
+        colPlaced: col,
+        dicePlaced: col,
+        roomCode: GameManager.roomCode,
+        playerOneMoved: GameManager.playerOne
+    }
+    k_socket.emit("player-move", (moveInformation));
+}
+    
+    */
 
 });
 
