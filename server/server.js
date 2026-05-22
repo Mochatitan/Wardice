@@ -9,7 +9,7 @@ const server = http.createServer(app);
 //const io = new Server(server);
 const io = require("socket.io")(server, {
     cors: {
-        origin: "http://127.0.0.1:5173",
+        origin: "*", // Allows connections via your Nginx proxy from any source
         methods: ["GET", "POST"]
     }
 });
@@ -57,16 +57,16 @@ io.on('connection', (socket) => {
     socket.on("join-lobby", (code, name) => {
         let playerDuplicate = false;
         let playerJoining = null;
-        players.forEach((playerEach)=>{
-            if(playerEach.id === socket.id){
+        players.forEach((playerEach) => {
+            if (playerEach.id === socket.id) {
                 console.log("player duplicate: " + name);
                 playerDuplicate = true;
             }
         });
-        if(playerDuplicate){
+        if (playerDuplicate) {
             return; // TODO make duplicates only apply to same room, and warn player they are a duplicate
         }
-        if(!playerDuplicate){
+        if (!playerDuplicate) {
             playerJoining = new Player(name, socket.id, players.length);
             players.push(playerJoining);
         }
@@ -87,7 +87,7 @@ io.on('connection', (socket) => {
                     players: lobby.players.map(player => ({ name: player.name, id: player.id, index: player.index })), // Send as plain objects,
                     index: index
                 });
-                if(lobby.isFull()){
+                if (lobby.isFull()) {
                     lobby.startGame(io);
                 }
             } else {
@@ -107,7 +107,7 @@ io.on('connection', (socket) => {
         // socket.emit("enemy-move", (moveInformation));
     });
 
-    
+
     /*
 function sendMoveToServer(col, dice){
     const moveInformation = {
