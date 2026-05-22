@@ -3,7 +3,7 @@ import { ctx, canvas, GameManager } from '../main.js';
 import { io } from "socket.io-client";
 import { SceneManager } from "../main.js";
 import { Lobby } from "../Lobby.js";
-import {Player} from "../Player.js";
+import { Player } from "../Player.js";
 import { k_socket } from "../socket.js";
 import { LobbyScene } from "./lobbyScreen.js";
 
@@ -44,7 +44,9 @@ new ButtonObject(() => [((canvas.width / 2) - 200), 500], () => [400, 150], func
     ctx.fillRect(x, y, w, h);
 }, function () {
     //k_socket.emit("test", "if you can read this, the test worked  ");
-    console.log(this.parentScene.objects[2].text)
+    console.log("creating lobby");
+    k_socket.emit("create-lobby", namebox.getInput());
+
 }),
 
 ]);

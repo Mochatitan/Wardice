@@ -18,7 +18,7 @@ const PORT = 3000;
 
 const players = [];
 const lobbies = [];
-lobbies.push(new Lobby("JKLM", "1234"));
+// lobbies.push(new Lobby("JKLM", "1234"));
 // console.log("lobbies: " + lobbies.length);
 
 function getPlayerIndexByID(id) {
@@ -99,6 +99,29 @@ io.on('connection', (socket) => {
         //io.emit("test-two", "if you can read this the test worked");
     });
 
+    socket.on("create-lobby", (name) => {
+
+        let playerJoining = new Player(name, socket.id, players.length);
+        players.push(playerJoining);
+
+
+        let index = getPlayerIndexByID(playerJoining.id);
+        let code = generateLetterCode();
+
+        let lobby = new Lobby(code, "1234");
+
+        console.log("player " + playerJoining.name + " attempt to create lobby " + code + ".");
+        lobby.addPlayer(playerJoining, socket);
+        lobbies.push(lobby);
+        socket.emit("suckies-join", {
+            code: lobby.code,
+            password: lobby.password,
+            players: lobby.players.map(player => ({ name: player.name, id: player.id, index: player.index })), // Send as plain objects,
+            index: index
+        });
+
+    });
+
 
     socket.on("player-move", (moveInformation) => {
         console.log("player moved at " + moveInformation.colPlaced);
@@ -125,9 +148,21 @@ function sendMoveToServer(col, dice){
 
 
 
+function generateLetterCode() {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let code = '';
+
+    for (let i = 0; i < 4; i++) {
+        const randomIndex = Math.floor(Math.random() * letters.length);
+        code += letters.charAt(randomIndex);
+    }
+
+    return code;
+}
+
 
 
 
 server.listen(PORT, () => {
-    console.log(`Server is running on http://127.0.0.1:${PORT}`);
+    console.log(`Server is running lad`);
 });

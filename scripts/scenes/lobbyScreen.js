@@ -1,4 +1,4 @@
-import { Scene, Object, ImageObject, ButtonObject } from "../scene";
+import { Scene, Object, ImageObject, ButtonObject, TextObject } from "../scene";
 import { ctx, canvas } from '../main.js';
 import { SceneManager, GameManager } from "../main.js";
 import { MainScene } from "./mainScreen.js";
@@ -11,12 +11,13 @@ export const LobbyScene = new Scene([
         ctx.fillStyle = "orange";
         ctx.fillRect(x, y, this.data.loadingProgress, 120);
     }),
+    new TextObject(() => { return ("code: " + GameManager.roomCode); }, () => [1000, 500], [300, 100])
 ]);
 
 k_socket.on("game-start", (gameData) => {
     console.log("lobby started!");
     console.log(gameData.name);
-    if(GameManager.name == gameData.name){
+    if (GameManager.name == gameData.name) {
         console.log("IM PLAYER ONE");
         GameManager.playerOne = true;
     }
