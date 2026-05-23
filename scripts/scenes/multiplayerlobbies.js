@@ -2,8 +2,6 @@ import { Scene, Object, ImageObject, ButtonObject, TextObject, InputObject } fro
 import { ctx, canvas, GameManager } from '../main.js';
 import { io } from "socket.io-client";
 import { SceneManager } from "../main.js";
-import { Lobby } from "../Lobby.js";
-import { Player } from "../Player.js";
 import { k_socket } from "../socket.js";
 import { LobbyScene } from "./lobbyScreen.js";
 
@@ -60,11 +58,6 @@ new ButtonObject(() => [((canvas.width / 2) - 200), 500], () => [400, 150], func
 k_socket.on("suckies-join", (lobbyData) => {
     console.log("im joining the lobby! can you say lobby in spanish?");
     console.log(lobbyData.code);
-
-    let lobby = new Lobby(lobbyData.code, lobbyData.password);
-    //convert player list into a player list
-    lobby.players = lobbyData.players.map(p => new Player(p.name, p.id, p.index));
-    lobby.printPlayers();
 
     GameManager.index = lobbyData.index;
     GameManager.roomCode = lobbyData.code;

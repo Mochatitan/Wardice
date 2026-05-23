@@ -197,9 +197,10 @@ class BackgroundObject extends Object {
 }
 
 class TextObject extends Object {
-    constructor(textFunction, pos, dimensions, update = EMPTY) {
+    constructor(textFunction, pos, dimensions, textCentering = "center",update = EMPTY) {
         super(pos, function () {
             ctx.font = "80px Candela";
+            ctx.textAlign = textCentering;
             const [x, y] = this.position();
             ctx.fillText(textFunction(), x, y);
         }, update);

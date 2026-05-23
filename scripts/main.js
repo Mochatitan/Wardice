@@ -1,7 +1,6 @@
 import { Scene, Object, ImageObject, ButtonObject } from './scene.js'
 import { MultiplayerLobbiesScene } from './scenes/multiplayerlobbies.js';
 import { MainScene } from './scenes/mainScreen.js';
-import { LoadingScene } from './scenes/loadingScreen.js';
 import { singleplayerGameScene } from './scenes/singleplayerGameScene.js'
 import { k_socket } from './socket.js';
 
@@ -35,8 +34,9 @@ const GameManager = {
 function initialize() {
     onresize = resize;
     resize();
-    SceneManager.currentScene = MultiplayerLobbiesScene;
+    // SceneManager.currentScene = MultiplayerLobbiesScene;
     // SceneManager.currentScene = singleplayerGameScene;
+    SceneManager.currentScene = MainScene;
 
     requestAnimationFrame(loop);
 }
