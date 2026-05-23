@@ -161,6 +161,48 @@ function generateLetterCode() {
 }
 
 
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
+
+process.stdin.on('data', (text) => {
+    const command = text.trim();
+    if (command === 'status') {
+        console.log('Server is running smoothly.');
+    } else if (command === 'stop') {
+        console.log('Stopping server...');
+    } else if (command === 'clearlobbies') {
+        console.log('clearing lobbies');
+        lobbies.length = 0;
+    } else if (command === 'atombomb') {
+        console.log("bombs away");
+
+        for (let col = 0; col <= 2; col++) {
+            for (let i = 0; i < 3; i++) {
+                io.emit("enemy-move", {
+                    colPlaced: col,
+                    dicePlaced: 999,
+                    roomCode: "AAAA",
+                    playerOneMoved: false,
+                });
+            }
+        }
+        for (let col = 0; col <= 2; col++) {
+            for (let i = 0; i < 3; i++) {
+                io.emit("enemy-move", {
+                    colPlaced: col,
+                    dicePlaced: 999,
+                    roomCode: "AAAA",
+                    playerOneMoved: true,
+                });
+            }
+        }
+    } else if (command === 'hiroshima') {
+        console.log("bombs away");
+
+        io.emit("nuked");
+    }
+});
+
 
 
 server.listen(PORT, () => {

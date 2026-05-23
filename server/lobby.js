@@ -1,5 +1,4 @@
 
-
 class Lobby {
 
     players = [];
@@ -11,25 +10,25 @@ class Lobby {
         this.password = password;
     }
 
-    addPlayer(player, socket){
+    addPlayer(player, socket) {
         this.players.push(player);
         player.room = this.code;
         socket.join(this.code);
         console.log(player.name + " joined room " + this.code);
 
-        
+
     }
 
-    isFull(){
-        if(this.players.length === 2){
+    isFull() {
+        if (this.players.length === 2) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
 
-    startGame(io){
-                
+    startGame(io) {
+
         console.log("game " + this.code + " full. Starting game now...");
         console.log("GAME STARTING");
         io.to(this.code).emit("game-start", {
@@ -42,13 +41,13 @@ class Lobby {
         // SceneManager.currentScene = multiplayerGameScene;
     }
 
-    sendMoveData(socket, player, moveData){
+    sendMoveData(socket, player, moveData) {
         console.log(player.name + " made a move.");
         socket.emit(this.code, moveData);
     }
 
-    isThisYourGuy(player){
-        if(player.room === this.code){
+    isThisYourGuy(player) {
+        if (player.room === this.code) {
             console.log("player " + player.name + " belongs to me, Room " + this.code);
             return true;
         }

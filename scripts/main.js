@@ -3,7 +3,7 @@ import { MultiplayerLobbiesScene } from './scenes/multiplayerlobbies.js';
 import { MainScene } from './scenes/mainScreen.js';
 import { LoadingScene } from './scenes/loadingScreen.js';
 import { singleplayerGameScene } from './scenes/singleplayerGameScene.js'
-import {k_socket} from './socket.js';
+import { k_socket } from './socket.js';
 
 /** @type {HTMLCanvasElement} */
 
@@ -24,6 +24,7 @@ const GameManager = {
     roomIndex: 6004,
     roomCode: "AAAA",
     firstDice: 7,
+    cheats: false,
 }
 
 

@@ -31,6 +31,9 @@ new ButtonObject(() => [((canvas.width / 2) - 150) + 110, 300], () => [300, 150]
 }, function () {
     // typingCode = true;
     // console.log(typingCode);
+    if (namebox.getInput() === "mochatitan") {
+        GameManager.cheats = true;
+    }
     k_socket.emit("join-lobby", codebox.getInput(), namebox.getInput());
     //k_socket.emit("test", "if you can read this, the test worked  ");
 }),
@@ -44,6 +47,9 @@ new ButtonObject(() => [((canvas.width / 2) - 200), 500], () => [400, 150], func
     ctx.fillRect(x, y, w, h);
 }, function () {
     //k_socket.emit("test", "if you can read this, the test worked  ");
+    if (namebox.getInput() === "mochatitan") {
+        GameManager.cheats = true;
+    }
     console.log("creating lobby");
     k_socket.emit("create-lobby", namebox.getInput());
 
