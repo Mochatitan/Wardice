@@ -336,6 +336,7 @@ function placeDice(col) {
         row = 2;
     } else {
         console.log("spot taken");
+        return;
     }
     sendMoveToServer(col, currentDice);
     playerGrid[row][col] = currentDice; // Mark cell as "drawn"
