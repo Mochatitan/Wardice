@@ -66,17 +66,14 @@ io.on('connection', (socket) => {
         if (playerDuplicate) {
             return; // TODO make duplicates only apply to same room, and warn player they are a duplicate
         }
-        if (!playerDuplicate) {
-            playerJoining = new Player(name, socket.id, players.length);
-            players.push(playerJoining);
-        }
+        playerJoining = new Player(name, socket.id, players.length);
+        // players.push(playerJoining);
 
-        let index = getPlayerIndexByID(playerJoining.id);
-
-        console.log("player " + playerJoining.name + " attempt to log onto lobby " + code + ".");
+        console.log("player " + name + " attempt to log onto lobby " + code + ".");
         lobbies.forEach((lobby, index) => {
             if (code == lobby.code) {
                 console.log("lobby code match.");
+                players.push(playerJoining);
                 lobby.addPlayer(playerJoining, socket);
                 //lobby.printPlayers();
                 //io.to("JKLM").emit("test-room", "skib");
