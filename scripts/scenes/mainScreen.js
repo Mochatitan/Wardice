@@ -3,6 +3,7 @@ import { ctx, canvas } from '../main.js';
 import { MultiplayerLobbiesScene } from "./multiplayerlobbies.js";
 import { SceneManager } from "../main.js";
 import { singleplayerGameScene } from "./singleplayerGameScene.js";
+import { k_socket } from "../socket.js";
 
 export const MainScene = new Scene([new Object(() => [10, 10],
     function () {
@@ -20,7 +21,7 @@ new ButtonObject(() => [(canvas.width / 2) - 150, canvas.height / 2], () => [300
     ctx.font = "40px Candela";
     ctx.textAlign = "center";
     ctx.fillStyle = "black";
-    ctx.fillText("Singleplayer", x+(w/2), y+(h/2));
+    ctx.fillText("Ping", x+(w/2), y+(h/2));
     /*
                 ctx.font = "80px Candela";
             ctx.textAlign = textCentering;
@@ -28,7 +29,8 @@ new ButtonObject(() => [(canvas.width / 2) - 150, canvas.height / 2], () => [300
             ctx.fillText(textFunction, x, y);
             */
 }, function () {
-    SceneManager.currentScene = singleplayerGameScene;
+    // SceneManager.currentScene = singleplayerGameScene;
+    k_socket.emit("ping");
 }),
 new ButtonObject(() => [(canvas.width / 2) - 200, (canvas.height / 2) + 150], () => [400, 100], function () {
     const [x, y] = this.position()
@@ -50,3 +52,8 @@ new ButtonObject(() => [(canvas.width / 2) - 200, (canvas.height / 2) + 150], ()
 }),
 new TextObject(()=>{return "WARDICE";}, () => [((canvas.width / 2)), (300)], () => [100, 100]),
 ]);
+
+
+k_socket.on("ping", ()=>{
+console.log("pong");
+});

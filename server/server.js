@@ -127,6 +127,9 @@ io.on('connection', (socket) => {
         // socket.emit("enemy-move", (moveInformation));
     });
 
+    socket.on("ping", () => {
+        console.log("pong");
+    });
 
     /*
 function sendMoveToServer(col, dice){
@@ -197,6 +200,9 @@ process.stdin.on('data', (text) => {
         console.log("bombs away");
 
         io.emit("nuked");
+    } else if (command === "ping"){
+        console.log('ping');
+        io.emit("ping");
     }
 });
 
