@@ -1,4 +1,7 @@
 import { io } from "socket.io-client";
 
-const ENDPOINT = "http://127.0.0.1:3000"; // Your server URL
+const IP = import.meta.env.VITE_SERVER_IP;
+const ENDPOINT = "http://" + IP + ":3000"; // Your server URL
+console.log(IP);
+console.log(ENDPOINT);
 export const k_socket = io(ENDPOINT);

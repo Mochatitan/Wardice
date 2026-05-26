@@ -116,6 +116,12 @@ function getGridCoords(mx, my) {
     return { row, col };
 }
 
+function resetGame(startAsPlayerOne){
+    GameManager.playerOne = startAsPlayerOne;
+    enemyGrid = new Array(ROWS).fill(null).map(() => new Array(COLS).fill(6894));
+    playerGrid = new Array(ROWS).fill(null).map(() => new Array(COLS).fill(6894));
+}
+
 // Check if mouse is inside the draw area
 function isInsideDrawArea(mx, my) {
     return mx >= playerDrawArea.x && mx < playerDrawArea.x + playerDrawArea.width &&
