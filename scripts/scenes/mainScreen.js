@@ -21,7 +21,7 @@ new ButtonObject(() => [(canvas.width / 2) - 150, canvas.height / 2], () => [300
     ctx.font = "40px Candela";
     ctx.textAlign = "center";
     ctx.fillStyle = "black";
-    ctx.fillText("Ping", x+(w/2), y+(h/2));
+    ctx.fillText("Singleplayer", x + (w / 2), y + (h / 2));
     /*
                 ctx.font = "80px Candela";
             ctx.textAlign = textCentering;
@@ -29,8 +29,9 @@ new ButtonObject(() => [(canvas.width / 2) - 150, canvas.height / 2], () => [300
             ctx.fillText(textFunction, x, y);
             */
 }, function () {
-    // SceneManager.currentScene = singleplayerGameScene;
-    k_socket.emit("ping");
+    SceneManager.currentScene = singleplayerGameScene;
+    //singleplayerGameScene.initialize();
+    //k_socket.emit("ping");
 }),
 new ButtonObject(() => [(canvas.width / 2) - 200, (canvas.height / 2) + 150], () => [400, 100], function () {
     const [x, y] = this.position()
@@ -40,7 +41,7 @@ new ButtonObject(() => [(canvas.width / 2) - 200, (canvas.height / 2) + 150], ()
     ctx.font = "60px Candela";
     ctx.textAlign = "center";
     ctx.fillStyle = "black";
-    ctx.fillText("Multiplayer", x+(w/2), y+(h/2)+10);
+    ctx.fillText("Multiplayer", x + (w / 2), y + (h / 2) + 10);
     /*
                 ctx.font = "80px Candela";
             ctx.textAlign = textCentering;
@@ -50,10 +51,10 @@ new ButtonObject(() => [(canvas.width / 2) - 200, (canvas.height / 2) + 150], ()
 }, function () {
     SceneManager.currentScene = MultiplayerLobbiesScene;
 }),
-new TextObject(()=>{return "WARDICE";}, () => [((canvas.width / 2)), (300)], () => [100, 100]),
+new TextObject(() => { return "WARDICE"; }, () => [((canvas.width / 2)), (300)], () => [100, 100]),
 ]);
 
 
-k_socket.on("ping", ()=>{
-console.log("pong");
+k_socket.on("ping", () => {
+    console.log("pong");
 });
