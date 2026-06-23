@@ -5,32 +5,12 @@ import { SceneManager, GameManager } from "../main.js";
 import { getBestMove, getRandomMove } from "../robot.js";
 import { k_socket } from "../socket.js";
 import { Socket } from "socket.io-client";
+import { Lobby, ROWS, COLS, GRID_SIZE } from "../lobby.js";
 
-// Grid Settings
-const GRID_SIZE = 5;  // Change this for bigger/smaller pixels
-const ROWS = 3;       // Number of rows
-const COLS = 3;       // Number of columns
 
-let currentDice = 7;
-let enemyCurrentDice = 7;
-let isCurrentTurn = false;
 
 let initialized = false;
-
-let radiated = false;
-
-let gameOver = false;
-
-// Create a 2D grid filled with 0 (empty pixels)
-let enemyGrid = new Array(ROWS).fill(null).map(() => new Array(COLS).fill(6894));
-let playerGrid = new Array(ROWS).fill(null).map(() => new Array(COLS).fill(6894));
-
-const defaultColumn = "rgb(145,145,180)";
-const doubleColumn = "rgb(82, 201, 185)";
-const tripleColumn = "rgb(242, 242, 89)";
-
-let playerColorColumns = new Array(COLS).fill(defaultColumn);
-let enemyColorColumns = new Array(COLS).fill(defaultColumn);
+const gameLobby = new Lobby();
 
 // Define the drawing area (cyan rectangle)
 const playerDrawArea = {
@@ -82,12 +62,9 @@ k_socket.on("enemy-move", (moveInformation) => {
     }
 });
 
-k_socket.on("nuked", () => {
-    radiated = true;
-});
 
 function recieveMoveFromServer(col, dice) {
-    enemyPlaceDice(col, dice);
+    gameLobby.enemyPlaceDice(col, dice);
 }
 
 
@@ -116,7 +93,7 @@ function getGridCoords(mx, my) {
     return { row, col };
 }
 
-function resetGame(startAsPlayerOne){
+function resetGame(startAsPlayerOne) {
     GameManager.playerOne = startAsPlayerOne;
     enemyGrid = new Array(ROWS).fill(null).map(() => new Array(COLS).fill(6894));
     playerGrid = new Array(ROWS).fill(null).map(() => new Array(COLS).fill(6894));
