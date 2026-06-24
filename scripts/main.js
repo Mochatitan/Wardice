@@ -3,6 +3,7 @@ import { MultiplayerLobbiesScene } from './scenes/multiplayerlobbies.js';
 import { MainScene } from './scenes/mainScreen.js';
 import { singleplayerGameScene } from './scenes/singleplayerGameScene.js'
 import { k_socket } from './socket.js';
+import { TestScene } from "./scenes/testScreen.js";
 
 /** @type {HTMLCanvasElement} */
 

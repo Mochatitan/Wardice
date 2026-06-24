@@ -67,21 +67,21 @@ class ImageObject extends Object {
             ctx.drawImage(this.image, x, y);
         }, update)
         this.image = new Image();
-        this.image.src = path;
+        this.image.src = "/img/" + path;
     }
 }
 
 class DiceObject extends Object {
     constructor(getNumber, pos, size, update = EMPTY,) {
         super(pos, function () {
-            if(getNumber() == 6894){return;}
-            if(getNumber() == 3506){
+            if (getNumber() == 6894) { return; }
+            if (getNumber() == 3506) {
                 const [x, y] = this.position();
                 ctx.fillStyle = "gray";
                 ctx.fillRect(x, y, size, size);
                 ctx.lineWidth = 5;
                 ctx.strokeStyle = "black";
-                ctx.strokeRect(x,y,size,size);
+                ctx.strokeRect(x, y, size, size);
                 return;
             }
             const [x, y] = this.position();
@@ -89,80 +89,94 @@ class DiceObject extends Object {
             ctx.fillRect(x, y, size, size);
             ctx.lineWidth = 5;
             ctx.strokeStyle = "black";
-            ctx.strokeRect(x,y,size,size);
+            ctx.strokeRect(x, y, size, size);
             ctx.fillStyle = "black";
             ctx.lineWidth = 2;
-            let diceradius = size/2;
-            let cx = x+diceradius;
-            let cy = y+diceradius; //center x and y
-            let mlkjr = diceradius * (4/9);
-            let mlk = diceradius * (5/9);
-            switch(getNumber()){
-                case 1: 
+            let diceradius = size / 2;
+            let cx = x + diceradius;
+            let cy = y + diceradius; //center x and y
+            let mlkjr = diceradius * (4 / 9);
+            let mlk = diceradius * (5 / 9);
+            this.oneDiceImage = new Image();
+            switch (getNumber()) {
+                case 1:
                     ctx.beginPath();
-                    ctx.arc(cx, cy, diceradius/4, 0, 2* Math.PI);
+                    ctx.arc(cx, cy, diceradius / 4, 0, 2 * Math.PI);
                     ctx.fill();
-                break;
-                case 2: 
-                    ctx.beginPath();
-                    ctx.arc(cx+mlkjr, cy -mlkjr, diceradius/4, 0, 2* Math.PI);
-                    ctx.arc(cx-mlkjr, cy+mlkjr, diceradius/4, 0, 2* Math.PI);
-                    ctx.fill();
-                break;
-                case 3: 
-                    ctx.beginPath();
-                    ctx.arc(cx-mlk, cy+mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.arc(cx, cy, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.arc(cx+mlk, cy -mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.fill();
-                break;
-                case 4: 
-                    ctx.beginPath();
-                    ctx.arc(cx+mlk, cy+mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.arc(cx+mlk, cy-mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(cx-mlk, cy+mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.arc(cx-mlk, cy-mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.fill();
-                break;
-                case 5: 
-                    ctx.beginPath();
-                    ctx.arc(cx+mlk, cy+mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.arc(cx+mlk, cy-mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(cx-mlk, cy+mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.arc(cx-mlk, cy-mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(cx, cy, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.fill();
-                break;
-                case 6: 
-                    ctx.beginPath();
-                    ctx.arc(cx+mlk, cy+mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.arc(cx+mlk, cy, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.arc(cx+mlk, cy-mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(cx-mlk, cy+mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.arc(cx-mlk, cy-mlk, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.arc(cx-mlk, cy, diceradius/4.5, 0, 2* Math.PI);
-                    ctx.fill();
+                    this.oneDiceImage.src = "/img/dice/One.png";
 
-                break;
+                    break;
+                case 2:
+                    ctx.beginPath();
+                    ctx.arc(cx + mlkjr, cy - mlkjr, diceradius / 4, 0, 2 * Math.PI);
+                    ctx.arc(cx - mlkjr, cy + mlkjr, diceradius / 4, 0, 2 * Math.PI);
+                    ctx.fill();
+                    this.oneDiceImage.src = "/img/dice/Two.png";
+                    break;
+                case 3:
+                    ctx.beginPath();
+                    ctx.arc(cx - mlk, cy + mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.arc(cx, cy, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.arc(cx + mlk, cy - mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.fill();
+                    this.oneDiceImage.src = "/img/dice/Three.png";
+                    break;
+                case 4:
+                    ctx.beginPath();
+                    ctx.arc(cx + mlk, cy + mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.arc(cx + mlk, cy - mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(cx - mlk, cy + mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.arc(cx - mlk, cy - mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.fill();
+                    this.oneDiceImage.src = "/img/dice/Four.png";
+                    break;
+                case 5:
+                    ctx.beginPath();
+                    ctx.arc(cx + mlk, cy + mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.arc(cx + mlk, cy - mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(cx - mlk, cy + mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.arc(cx - mlk, cy - mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.fill();
+                    this.oneDiceImage.src = "/img/dice/Five.png";
+                    break;
+                case 6:
+                    ctx.beginPath();
+                    ctx.arc(cx + mlk, cy + mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.arc(cx + mlk, cy, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.arc(cx + mlk, cy - mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(cx - mlk, cy + mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.arc(cx - mlk, cy - mlk, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.arc(cx - mlk, cy, diceradius / 4.5, 0, 2 * Math.PI);
+                    ctx.fill();
+                    this.oneDiceImage.src = "/img/dice/Six.png";
+
+                    break;
+                case 6894:
+                    this.oneDiceImage.src = "/img/dice/Blank.png";
+                    break;
+
                 default:
-                ctx.beginPath();
-                ctx.arc(x + diceradius, y + diceradius, diceradius/1.2, 0, 2* Math.PI);
-                ctx.fill();
-                
-
+                    ctx.beginPath();
+                    ctx.arc(x + diceradius, y + diceradius, diceradius / 1.2, 0, 2 * Math.PI);
+                    ctx.fill();
+                    this.oneDiceImage.src = "/img/dice/Unknown.png";
             }
+
+            ctx.drawImage(this.oneDiceImage, x, y, size, size);
+
         }, update);
     }
 
-    setDice(newValue){
+    setDice(newValue) {
         this.diceValue = newValue;
         this.draw();
     }
@@ -188,16 +202,16 @@ class ButtonObject extends Object {
     }
 }
 class BackgroundObject extends Object {
-    constructor(color){
-        super(() => [0,0], function () {
+    constructor(color) {
+        super(() => [0, 0], function () {
             ctx.fillStyle = color;
-            ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
         });
     }
 }
 
 class TextObject extends Object {
-    constructor(textFunction, pos, dimensions, textCentering = "center",update = EMPTY) {
+    constructor(textFunction, pos, dimensions, textCentering = "center", update = EMPTY) {
         super(pos, function () {
             ctx.font = "80px Candela";
             ctx.textAlign = textCentering;
@@ -269,4 +283,4 @@ class InputObject extends Object {
     }
 }
 
-export { Scene, Object, ImageObject, ButtonObject, TextObject, InputObject, DiceObject, BackgroundObject}
+export { Scene, Object, ImageObject, ButtonObject, TextObject, InputObject, DiceObject, BackgroundObject }
